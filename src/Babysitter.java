@@ -68,4 +68,24 @@ public class Babysitter {
 
         return babysitterWage;
     }
+
+    public int getWageAfterMidnight(String startTime, String endTime) {
+        int babysitterWage = 0;
+
+        String[] splitStart = startTime.split(":");
+        String[] splitEnd = endTime.split(":");
+
+        int startHour = parseInt(splitStart[0]);
+        int startMinute = parseInt(splitStart[1]);
+        int endHour = parseInt(splitEnd[0]);
+        int endMinute = parseInt(splitEnd[1]);
+
+        if (startTime(startHour, startMinute, 0) && endTime(endHour, endMinute, 0)) {
+            if (endHour > 0) {
+                babysitterWage = 16 * endHour;
+            }
+        }
+
+        return babysitterWage;
+    }
 }

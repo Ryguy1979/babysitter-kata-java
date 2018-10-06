@@ -35,11 +35,21 @@ public class BabysitterTest {
 
     @Test
     void babysitterIsPaidEightDollarsInAnHourAfterBedtime() {
-        assertEquals(8, babysitter.getWageAfterBedtimeButBeforeMidnight("20:00:00", "21:00:00"));
+        assertEquals(8, babysitter.getWageAfterBedtimeButBeforeMidnight("17:00:00", "21:00:00"));
     }
 
     @Test
     void babysitterIsPaidThirtyTwoDollarsBedtimeThroughMidnight() {
-        assertEquals(32, babysitter.getWageAfterBedtimeButBeforeMidnight("20:00:00", "00:00:00"));
+        assertEquals(32, babysitter.getWageAfterBedtimeButBeforeMidnight("17:00:00", "00:00:00"));
+    }
+
+    @Test
+    void babysitterIsPaidSixteenDollarsInAnHourAfterMidnight() {
+        assertEquals(16, babysitter.getWageAfterMidnight("17:00:00", "01:00:00"));
+    }
+
+    @Test
+    void babysitterIsPaidSixtyFourDollarsFromMidnightToFour() {
+        assertEquals(64, babysitter.getWageAfterMidnight("17:00:00", "04:00:00"));
     }
 }
