@@ -15,16 +15,21 @@ public class BabysitterTest {
 
     @Test
     void babysitterHasValidStartTime() {
-        assertTrue(babysitter.startTime("17:00:00"));
+        assertTrue(babysitter.startTime(17, 0, 0));
     }
 
     @Test
     void babysitterHasValidEndTime() {
-        assertTrue(babysitter.endTime("04:00:00"));
+        assertTrue(babysitter.endTime(4, 0, 0));
     }
 
     @Test
     void babysitterIsPaidTwelveDollarsBeforeBedtime() {
         assertEquals(12, babysitter.calculatedWage("17:00:00", "18:00:00"));
+    }
+
+    @Test
+    void babysitterIsPaidTwelveDollarsPerHourBeforeBedtime() {
+        assertEquals(36, babysitter.calculatedWage("17:00:00", "20:00:00"));
     }
 }
