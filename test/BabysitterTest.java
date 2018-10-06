@@ -24,12 +24,22 @@ public class BabysitterTest {
     }
 
     @Test
-    void babysitterIsPaidTwelveDollarsBeforeBedtime() {
-        assertEquals(12, babysitter.calculatedWage("17:00:00", "18:00:00"));
+    void babysitterIsPaidTwelveDollarsInAnHourBeforeBedtime() {
+        assertEquals(12, babysitter.getWageBeforeBedtime("17:00:00", "18:00:00"));
     }
 
     @Test
-    void babysitterIsPaidTwelveDollarsPerHourBeforeBedtime() {
-        assertEquals(36, babysitter.calculatedWage("17:00:00", "20:00:00"));
+    void babysitterIsPaidThirtySixDollarsForThreeHoursBeforeBedtime() {
+        assertEquals(36, babysitter.getWageBeforeBedtime("17:00:00", "20:00:00"));
+    }
+
+    @Test
+    void babysitterIsPaidEightDollarsInAnHourAfterBedtime() {
+        assertEquals(8, babysitter.getWageAfterBedtimeButBeforeMidnight("20:00:00", "21:00:00"));
+    }
+
+    @Test
+    void babysitterIsPaidThirtyTwoDollarsBedtimeThroughMidnight() {
+        assertEquals(32, babysitter.getWageAfterBedtimeButBeforeMidnight("20:00:00", "00:00:00"));
     }
 }

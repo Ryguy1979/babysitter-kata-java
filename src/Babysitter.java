@@ -25,7 +25,7 @@ public class Babysitter {
         return checkedTime.isBefore(validEndTime);
     }
 
-    public int calculatedWage(String startTime, String endTime) {
+    public int getWageBeforeBedtime(String startTime, String endTime) {
         int babysitterWage = 0;
 
         String[] splitStart = startTime.split(":");
@@ -37,9 +37,33 @@ public class Babysitter {
         int endMinute = parseInt(splitEnd[1]);
 
         if (startTime(startHour, startMinute, 0) && endTime(endHour, endMinute, 0)) {
-            babysitterWage = 12 * (endHour - startHour);
+            babysitterWage += 12 * (endHour - startHour);
 
             return babysitterWage;
+        }
+
+        return babysitterWage;
+    }
+
+    public int getWageAfterBedtimeButBeforeMidnight(String startTime, String endTime) {
+        int babysitterWage = 0;
+
+        String[] splitStart = startTime.split(":");
+        String[] splitEnd = endTime.split(":");
+
+        int startHour = parseInt(splitStart[0]);
+        int startMinute = parseInt(splitStart[1]);
+        int endHour = parseInt(splitEnd[0]);
+        int endMinute = parseInt(splitEnd[1]);
+
+        if (startTime(startHour, startMinute, 0) && endTime(endHour, endMinute, 0)) {
+            if (endHour == 0) {
+                endHour = 24;
+            }
+
+            if (endHour > 20) {
+                babysitterWage = 8 * (endHour - 20);
+            }
         }
 
         return babysitterWage;
