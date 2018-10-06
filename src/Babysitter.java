@@ -7,4 +7,11 @@ public class Babysitter {
 
         return checkedTime.isAfter(validStartTime);
     }
+
+    public boolean endTime(String endTime) {
+        LocalTime checkTime = LocalTime.parse(endTime);
+        LocalTime validEndTime = LocalTime.parse("04:00:01");
+
+        return checkTime.isBefore(validEndTime);
+    }
 }
