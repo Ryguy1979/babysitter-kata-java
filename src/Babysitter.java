@@ -11,7 +11,14 @@ public class Babysitter {
     public boolean endTime(String endTime) {
         LocalTime checkTime = LocalTime.parse(endTime);
         LocalTime validEndTime = LocalTime.parse("04:00:01");
+        System.out.println(LocalTime.parse("04:00:01"));
 
         return checkTime.isBefore(validEndTime);
+    }
+
+    public int calculatedWage(String startTime, String endTime) {
+        int babysitterWage = 12;
+
+        return babysitterWage;
     }
 }
