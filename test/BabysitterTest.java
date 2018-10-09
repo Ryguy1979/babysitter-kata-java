@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BabysitterTest {
@@ -15,12 +16,22 @@ public class BabysitterTest {
 
     @Test
     void babysitterHasValidStartTime() {
-        assertTrue(babysitter.startTime(17, 0, 0));
+        assertTrue(babysitter.startTime(17, 0));
+    }
+
+    @Test
+    void babysitterHasInvalidStartTime() {
+        assertFalse(babysitter.startTime(16, 59));
     }
 
     @Test
     void babysitterHasValidEndTime() {
-        assertTrue(babysitter.endTime(4, 0, 0));
+        assertTrue(babysitter.endTime(4, 0));
+    }
+
+    @Test
+    void babysitterHasInvalidEndTime() {
+        assertFalse(babysitter.endTime(4, 1));
     }
 
     @Test

@@ -8,23 +8,16 @@ public class Babysitter {
 
     private static final int BEDTIME = 20;
 
-    public boolean startTime(int startHour, int startMinute, int newDay) {
-        LocalDateTime checkedTime = LocalDate.now().atTime(startHour, startMinute).plus(newDay, ChronoUnit.DAYS);
-        LocalDateTime validStartTime = LocalDate.now().atTime(17, 0).minus(1, ChronoUnit.SECONDS);
+    public boolean startTime(int startHour, int startMinute) {
+        LocalDateTime checkedTime = LocalDate.now().atTime(startHour, startMinute);
 
-        return checkedTime.isAfter(validStartTime);
+        return checkedTime.isAfter(LocalDate.now().atTime(17, 0).minus(1, ChronoUnit.SECONDS));
     }
 
-    public boolean endTime(int startHour, int startMinute, int newDay) {
-        LocalDateTime checkedTime = LocalDate.now().atTime(startHour, startMinute).plus(newDay, ChronoUnit.DAYS);
-        LocalDateTime validEndTime;
-        if (newDay > 0) {
-            validEndTime = LocalDate.now().atTime(4, 0).plus(1, ChronoUnit.SECONDS);
-        } else {
-            validEndTime = LocalDate.now().plus(1, ChronoUnit.DAYS).atTime(0, 0);
-        }
+    public boolean endTime(int startHour, int startMinute) {
+        LocalDateTime checkedTime = LocalDate.now().plus(1, ChronoUnit.DAYS).atTime(startHour, startMinute);
 
-        return checkedTime.isBefore(validEndTime);
+        return checkedTime.isBefore(LocalDate.now().plus(1, ChronoUnit.DAYS).atTime(4, 0).plus(1, ChronoUnit.SECONDS));
     }
 
     public int getWageBeforeBedtime(String startTime, String endTime) {
@@ -38,7 +31,7 @@ public class Babysitter {
         int endHour = parseInt(splitEnd[0]);
         int endMinute = parseInt(splitEnd[1]);
 
-        if (startTime(startHour, startMinute, 0) && endTime(endHour, endMinute, 0)) {
+        if (startTime(startHour, startMinute) && endTime(endHour, endMinute)) {
             if (endHour > BEDTIME || endHour <= 4) {
                 endHour = BEDTIME;
             }
@@ -61,7 +54,7 @@ public class Babysitter {
         int endHour = parseInt(splitEnd[0]);
         int endMinute = parseInt(splitEnd[1]);
 
-        if (startTime(startHour, startMinute, 0) && endTime(endHour, endMinute, 0)) {
+        if (startTime(startHour, startMinute) && endTime(endHour, endMinute)) {
             if (endHour <= 4) {
                 endHour = 24;
             }
@@ -85,7 +78,7 @@ public class Babysitter {
         int endHour = parseInt(splitEnd[0]);
         int endMinute = parseInt(splitEnd[1]);
 
-        if (startTime(startHour, startMinute, 0) && endTime(endHour, endMinute, 0)) {
+        if (startTime(startHour, startMinute) && endTime(endHour, endMinute)) {
             if (endHour > 0) {
                 babysitterWage = 16 * endHour;
             }
@@ -105,22 +98,12 @@ public class Babysitter {
         int endHour = parseInt(splitEnd[0]);
         int endMinute = parseInt(splitEnd[1]);
 
-        if (startTime(startHour, startMinute, 0) && endTime(endHour, endMinute, 0)) {
-           babysitterWage = getWageBeforeBedtime(startTime, endTime)
-                   + getWageAfterBedtimeButBeforeMidnight(startTime, endTime)
-                   + getWageAfterMidnight(startTime, endTime);
+        if (startTime(startHour, startMinute) && endTime(endHour, endMinute)) {
+            babysitterWage = getWageBeforeBedtime(startTime, endTime)
+                    + getWageAfterBedtimeButBeforeMidnight(startTime, endTime)
+                    + getWageAfterMidnight(startTime, endTime);
         }
 
         return babysitterWage;
-    }
-
-    int[] getWorkTimes(String startTime, String endTime) {
-        String[] splitStart = startTime.split(":");
-        String[] splitEnd = endTime.split(":");
-
-        return new int[]{parseInt(splitStart[0]),
-                parseInt(splitStart[1]),
-                parseInt(splitEnd[0]),
-                parseInt(splitEnd[1])};
     }
 }
