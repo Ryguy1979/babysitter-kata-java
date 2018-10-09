@@ -1,9 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.time.LocalTime;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BabysitterTest {
 
@@ -16,86 +16,96 @@ public class BabysitterTest {
 
     @Test
     void babysitterHasValidStartTime() {
-        assertTrue(babysitter.startTime(17, 0));
+        assertTrue(babysitter.validateStartTime(17, 0));
     }
 
     @Test
     void babysitterHasInvalidStartTime() {
-        assertFalse(babysitter.startTime(16, 59));
+        assertFalse(babysitter.validateStartTime(16, 59));
     }
 
     @Test
     void babysitterHasValidEndTime() {
-        assertTrue(babysitter.endTime(4, 0));
+        assertTrue(babysitter.validateEndTime(4, 0, true));
     }
 
     @Test
     void babysitterHasInvalidEndTime() {
-        assertFalse(babysitter.endTime(4, 1));
+        assertFalse(babysitter.validateEndTime(4, 1, true));
     }
 
     @Test
     void babysitterIsPaidTwelveDollarsInAnHourBeforeBedtime() {
-        assertEquals(12, babysitter.getWageBeforeBedtime("17:00:00", "18:00:00"));
+        assertEquals(12, babysitter.getWageBeforeBedtime(LocalTime.parse("17:00:00"), LocalTime.parse("18:00:00")));
     }
 
     @Test
     void babysitterIsPaidThirtySixDollarsForThreeHoursBeforeBedtime() {
-        assertEquals(36, babysitter.getWageBeforeBedtime("17:00:00", "20:00:00"));
+        assertEquals(36, babysitter.getWageBeforeBedtime(LocalTime.parse("17:00:00"), LocalTime.parse("20:00:00")));
     }
 
     @Test
     void babysitterIsPaidEightDollarsInAnHourAfterBedtime() {
-        assertEquals(8, babysitter.getWageAfterBedtimeButBeforeMidnight("17:00:00", "21:00:00"));
+        assertEquals(8, babysitter.getWageAfterBedtimeButBeforeMidnight(LocalTime.parse("17:00:00"), LocalTime.parse("21:00:00")));
     }
 
     @Test
     void babysitterIsPaidThirtyTwoDollarsBedtimeThroughMidnight() {
-        assertEquals(32, babysitter.getWageAfterBedtimeButBeforeMidnight("17:00:00", "00:00:00"));
+        assertEquals(32, babysitter.getWageAfterBedtimeButBeforeMidnight(LocalTime.parse("17:00:00"), LocalTime.parse("00:00:00")));
     }
 
     @Test
     void babysitterIsPaidSixteenDollarsInAnHourAfterMidnight() {
-        assertEquals(16, babysitter.getWageAfterMidnight("17:00:00", "01:00:00"));
+        assertEquals(16, babysitter.getWageAfterMidnight(LocalTime.parse("17:00:00"), LocalTime.parse("01:00:00")));
     }
 
     @Test
     void babysitterIsPaidSixtyFourDollarsFromMidnightToFour() {
-        assertEquals(64, babysitter.getWageAfterMidnight("17:00:00", "04:00:00"));
+        assertEquals(64, babysitter.getWageAfterMidnight(LocalTime.parse("17:00:00"), LocalTime.parse("04:00:00")));
     }
 
     @Test
     void babysitterIsNotPaidForFractionHoursBeforeBedtime() {
-        assertEquals(0, babysitter.getWageBeforeBedtime("17:00:00", "17:30:00"));
+        assertEquals(0, babysitter.getWageBeforeBedtime(LocalTime.parse("17:00:00"), LocalTime.parse("17:30:00")));
     }
 
     @Test
     void babysitterIsPaidTwelveDollarsForAnHourAndAHalfBeforeBedtime() {
-        assertEquals(12, babysitter.getWageBeforeBedtime("17:00:00", "18:30:00"));
+        assertEquals(12, babysitter.getWageBeforeBedtime(LocalTime.parse("17:00:00"), LocalTime.parse("18:30:00")));
     }
 
     @Test
     void babysitterIsPaidEightDollarsForAnHourAndAHalfBeforeMidnight() {
-        assertEquals(8, babysitter.getWageAfterBedtimeButBeforeMidnight("17:00:00", "21:30:00"));
+        assertEquals(8, babysitter.getWageAfterBedtimeButBeforeMidnight(LocalTime.parse("17:00:00"), LocalTime.parse("21:30:00")));
     }
 
     @Test
     void babysitterIsPaidSixteenDollarsForAnHourAndAHalfAfterMidnight() {
-        assertEquals(16, babysitter.getWageAfterMidnight("17:00:00", "01:30:00"));
+        assertEquals(16, babysitter.getWageAfterMidnight(LocalTime.parse("17:00:00"), LocalTime.parse("01:30:00")));
     }
 
     @Test
-    void babysitterIsPaidEightyFourDollarsUntilOneAm() {
-        assertEquals(84, babysitter.calculateWage("17:00:00", "01:00:00"));
+    void babysitterIsPaidTwelveDollarsUntilSixPm() {
+        assertEquals(12, babysitter.calculateWage(LocalTime.parse("17:00:00"), LocalTime.parse("18:00:00"), false));
+    }
+
+    @Test
+    void babysitterIsPaidFortyFourDollarsUntilNinePm() {
+        assertEquals(44, babysitter.calculateWage(LocalTime.parse("17:00:00"), LocalTime.parse("21:00:00"), false));
+    }
+
+    @Test
+    void babysitterIsPaidSixtyEightDollarsThroughMidnight() {
+        assertEquals(68, babysitter.calculateWage(LocalTime.parse("17:00:00"), LocalTime.parse("00:00:00"), true));
     }
 
     @Test
     void babysitterIsPaidOneHundredDollarsUntilTwoAm() {
-        assertEquals(100, babysitter.calculateWage("17:00:00", "02:00:00"));
+        assertEquals(100, babysitter.calculateWage(LocalTime.parse("17:00:00"), LocalTime.parse("02:00:00"), true));
     }
 
     @Test
     void babysitterIsPaidOneHundredThirtyTwoDollarsForAFullNight() {
-        assertEquals(132, babysitter.calculateWage("17:00:00", "04:00:00"));
+        assertEquals(132, babysitter.calculateWage(LocalTime.parse("17:00:00"), LocalTime.parse("04:00:00"), true));
     }
 }
