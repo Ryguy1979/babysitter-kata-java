@@ -5,6 +5,10 @@ public class Babysitter {
 
     private static final int BEDTIME = 20;
 
+    public static void main(String[] args) {
+
+    }
+
     public boolean validateStartTime(int startHour, int startMinute) {
         return LocalTime.of(startHour, startMinute).isAfter(LocalTime.of(17, 0).minus(1, ChronoUnit.SECONDS));
     }
